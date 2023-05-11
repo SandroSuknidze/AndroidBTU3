@@ -8,7 +8,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -45,7 +50,6 @@ class ProfileActivity : AppCompatActivity() {
             )
             db.child(auth.uid!!).setValue(userInfo)
 
-
         }
         signOutButton.setOnClickListener {
             auth.signOut()
@@ -65,5 +69,17 @@ class ProfileActivity : AppCompatActivity() {
         updateButton = findViewById(R.id.updateButton)
         signOutButton = findViewById(R.id.signOutButton)
         profilePasswordUpdateButton = findViewById(R.id.profilePasswordUpdateButton)
+
+        db.child(auth.uid!!).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val userInfo = snapshot.getValue(User::class.java) ?: return
+                usernameTextView.text = userInfo.username
+                Glide.with(this@ProfileActivity).load(userInfo.link).into(imageView)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@ProfileActivity, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
