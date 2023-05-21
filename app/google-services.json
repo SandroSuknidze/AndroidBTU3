@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "914024212996",
-    "project_id": "fir-app-btu-2",
-    "storage_bucket": "fir-app-btu-2.appspot.com"
+    "project_number": "786218816501",
+    "firebase_url": "https://btu3-4509f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "btu3-4509f",
+    "storage_bucket": "btu3-4509f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:914024212996:android:2a000603bb76d7735fe351",
+        "mobilesdk_app_id": "1:786218816501:android:cb1a5b2deff4bc6f9f46bc",
         "android_client_info": {
           "package_name": "com.example.firebaseAppBTU2"
         }
       },
       "oauth_client": [
         {
-          "client_id": "914024212996-gbeigbc0ipgro6q0p5v148smiv686ko3.apps.googleusercontent.com",
+          "client_id": "786218816501-4c80hnlflmlokl7pu2cuuuf4492k895g.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDamZ7und4GwtyVXFQjJP_eB_--m5ebK6M"
+          "current_key": "AIzaSyB6jrE-b4_1N4Dp1TXCz8CC1JhGc9wgoNI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "914024212996-gbeigbc0ipgro6q0p5v148smiv686ko3.apps.googleusercontent.com",
+              "client_id": "786218816501-4c80hnlflmlokl7pu2cuuuf4492k895g.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

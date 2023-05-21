@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.FirebaseDatabase
+import org.w3c.dom.Text
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -26,9 +28,15 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var updateButton : Button
     private lateinit var signOutButton : Button
     private lateinit var profilePasswordUpdateButton : Button
+    private lateinit var editTextPhone : EditText
+    private lateinit var editTextTextPersonName : EditText
+    private lateinit var editTextTextPersonName3 : EditText
+    private lateinit var textView : TextView
+    private lateinit var textView2 : TextView
+    private lateinit var textView3 : TextView
 
     private val auth = FirebaseAuth.getInstance()
-    private val db = Firebase.database.getReference("User")
+    private val db = FirebaseDatabase.getInstance().getReference("User")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,14 +49,21 @@ class ProfileActivity : AppCompatActivity() {
         updateButton.setOnClickListener {
             val link = linkEditText.text.toString()
             val username = userNameEditText.text.toString()
+            val name = editTextTextPersonName.text.toString()
+            val surname = editTextTextPersonName3.text.toString()
+            val id = editTextPhone.text.toString()
 
             val userInfo = User(
                 auth.currentUser?.email,
-                auth.uid,
+                name,
+                surname,
+                id,
+                auth.currentUser!!.uid,
                 link,
                 username
             )
-            db.child(auth.uid!!).setValue(userInfo)
+
+            db.child(auth.currentUser!!.uid).setValue(userInfo)
 
         }
         signOutButton.setOnClickListener {
@@ -69,12 +84,27 @@ class ProfileActivity : AppCompatActivity() {
         updateButton = findViewById(R.id.updateButton)
         signOutButton = findViewById(R.id.signOutButton)
         profilePasswordUpdateButton = findViewById(R.id.profilePasswordUpdateButton)
+        editTextPhone = findViewById(R.id.editTextPhone)
+        editTextTextPersonName = findViewById(R.id.editTextTextPersonName)
+        editTextTextPersonName3 = findViewById(R.id.editTextTextPersonName3)
+        textView = findViewById(R.id.textView)
+        textView2 = findViewById(R.id.textView2)
+        textView3 = findViewById(R.id.textView3)
 
         db.child(auth.uid!!).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val userInfo = snapshot.getValue(User::class.java) ?: return
-                usernameTextView.text = userInfo.username
-                Glide.with(this@ProfileActivity).load(userInfo.link).into(imageView)
+
+                if(((userInfo.id)?.length!=13)||((userInfo.id)?.toDoubleOrNull()==null)){
+                    Toast.makeText(this@ProfileActivity, "incorrect id", Toast.LENGTH_SHORT).show()
+                }else {
+                    usernameTextView.text = userInfo.email
+                    textView.text = userInfo.id
+                    textView2.text = userInfo.name
+                    textView3.text = userInfo.surname
+                    Glide.with(this@ProfileActivity).load(userInfo.link).into(imageView)
+                }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
